@@ -1,5 +1,11 @@
 #!/bin/bash
 
+show_header() {
+    echo "=================================="
+    echo "🖥️  System Health Monitor"
+    echo "=================================="
+}
+
 detectOS() {
     case "$(uname)" in
         Darwin) OS="MacOS" ;;
@@ -73,6 +79,7 @@ detect_disk_usage() {
     draw_progress_bar $disk_usage "Disk Usage"
 }
 
+show_header
 echo "Detected OS: $OS"
 detect_cpu_usage
 detect_memory_usage
