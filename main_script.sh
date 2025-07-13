@@ -59,6 +59,21 @@ detect_memory_usage() {
     fi
 }
 
+detect_disk_usage() {
+    if [[ "$OS" == "MacOS" ]]; then
+        disk_usage=$(df -h | grep "/System/Volumes/Data$" | head -1 | awk '{print $5}' | sed 's/%//')
+        
+        if [[ -z "$disk_usage" ]]; then
+            disk_usage=$(df -h / | awk 'NR==2 {print $5}' | sed 's/%//')
+        fi
+    elif [[ "$OS" == "Linux" ]]; then
+        disk_usage=$(df -h / | awk 'NR==2 {print $5}' | sed 's/%//')
+    fi
+    
+    draw_progress_bar $disk_usage "Disk Usage"
+}
+
 echo "Detected OS: $OS"
 detect_cpu_usage
 detect_memory_usage
+detect_disk_usage
