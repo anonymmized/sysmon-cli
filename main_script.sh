@@ -79,8 +79,18 @@ detect_disk_usage() {
     draw_progress_bar $disk_usage "Disk Usage"
 }
 
+show_top_processes() {
+    echo ""
+    echo "Top 5 processes:"
+    ps aux | sort -nr -k 3 | head -5 | awk '{
+        split($11, a, "/"); 
+        printf "   %-12s %5s%%\n", a[length(a)], $3
+    }'
+}
+
 show_header
 echo "Detected OS: $OS"
 detect_cpu_usage
 detect_memory_usage
 detect_disk_usage
+show_top_processes
