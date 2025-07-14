@@ -14,7 +14,6 @@ detectOS() {
         *) OS="Unknown" ;;
     esac
 }
-
 detectOS
 
 draw_progress_bar() {
@@ -22,7 +21,6 @@ draw_progress_bar() {
     local -r label="$2"
     local -r max_length=10
     local bar=''
-
     for ((i=0; i<max_length; i++)); do
         if [ $i -lt $((progress * max_length / 100)) ]; then
             bar+='█'
@@ -30,7 +28,6 @@ draw_progress_bar() {
             bar+='░'
         fi
     done
-
     echo -e "$label: [$bar] $progress%"
 }
 
@@ -68,14 +65,12 @@ detect_memory_usage() {
 detect_disk_usage() {
     if [[ "$OS" == "MacOS" ]]; then
         disk_usage=$(df -h | grep "/System/Volumes/Data$" | head -1 | awk '{print $5}' | sed 's/%//')
-        
         if [[ -z "$disk_usage" ]]; then
             disk_usage=$(df -h / | awk 'NR==2 {print $5}' | sed 's/%//')
         fi
     elif [[ "$OS" == "Linux" ]]; then
         disk_usage=$(df -h / | awk 'NR==2 {print $5}' | sed 's/%//')
     fi
-    
     draw_progress_bar $disk_usage "Disk Usage"
 }
 
@@ -87,7 +82,6 @@ show_top_processes() {
         printf "   %-12s %5s%%\n", a[length(a)], $3
     }'
 }
-
 show_header
 echo "Detected OS: $OS"
 detect_cpu_usage
